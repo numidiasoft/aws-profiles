@@ -71,6 +71,6 @@ To create your template follow the example below
 
 ```
 
-**NOTE** : If you use ohmyzsh your prompt will be updated with the current aws account
+**NOTE** : If you use ohmyzsh, your prompt will be updated with the current aws account
 
 **Example**: aws:(paris)➜  git:(develop) ✗
