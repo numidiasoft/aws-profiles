@@ -6,11 +6,13 @@ Allow to switch aws between accounts easily
   
   * All templates are stored in the template dir
   * Templates names should be formatted following this pattern <profile_name>-credentials
-  To create your template follow the example below
+  
+  
+To create your template follow the example below
   
   ```
-    cp templates/me-credentials.example templates/myprofile-credentials
-    # Adapte values inside the file
+  cp templates/me-credentials.example templates/myprofile-credentials
+  # Adapte values inside the file
   ```
   
 ## Install
