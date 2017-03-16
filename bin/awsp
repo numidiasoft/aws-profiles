@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+set -e
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+NO_COLOR='\033[0m'
+
+help() {
+  echo "==> Usage :"
+  echo "==> awsp list # to list all available profiles"
+  echo "==> awsp <profile name> # switch the curent profile into <profile name> "
+}
+
+switch() {
+  switch_to=$1
+
+  if [ -z "${switch_to}" ]; then
+    echo "❌ Profile name is required"
+    echo "==> Usage: awsp <profile>"
+    exit -1
+  fi
+
+  credentials_path=`echo ~/.aws/templates/${switch_to}-credentials`
+  echo "✅  Checking the the existance of ${credentials_path}"
+  if [ ! -f "${credentials_path}" ] ; then
+    echo "❌  The aws credentials file ${switch_to}-credentials doesn't exist"
+    exit -1
+  else
+    echo "✅  Swtching to the new profile ${credentials_path}"
+    ln -sf  ${credentials_path} ~/.aws/credentials
+    echo "✅  Your Aws profile was switched to the ${switch_to} one"
+  fi
+}
+
+setCurrentProfile() {
+  echo "$1" > ~/.aws/.current_aws_profile
+  echo "✅  Current profile stored in ~/.aws/.current_aws_profile"
+}
+
+parse_aws_profile() {
+  current=$(cat ~/.aws/.current_aws_profile)
+  echo -e "${GREEN}*${NO_COLOR} ${current}"
+}
+
+reload_zsh() {
+ which zsh > /dev/null
+ if [ $?=0 ]; then
+   echo "✅  Reload zsh"
+   exec /bin/zsh
+ fi
+}
+
+case ${1} in
+list)
+ ls ~/.aws/templates
+ ;;
+current)
+ parse_aws_profile
+ ;;
+help|h|-h|--help)
+ help
+ ;;
+*)
+ switch ${1}
+ setCurrentProfile ${1}
+ reload_zsh
+ ;;
+esac
+

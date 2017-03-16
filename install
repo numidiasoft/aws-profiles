@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -e
+
+copy_zsh_theme() {
+  echo "✅  Setup robbyrussell.zsh-theme zsh them :)"
+ cp  zsh-theme/robbyrussellaws.zsh-theme ~/.oh-my-zsh/themes/
+}
+
+set_zsh_aws_theme() {
+  if [ -f "$HOME/.zshrc" ]; then
+    echo "✅  Set the them robbyrussellaws for your zshrc"
+    sed -i -e 's/ZSH_THEME\=\".*\"/ZSH_THEME\=\"robbyrussellaws\"/' "${HOME}/.zshrc"
+  fi
+}
+
+cp bin/awsp /usr/local/bin
+echo "✅  Awsp binary copied to /usr/local/bin/"
+
+
+cp -r templates ~/.aws/
+echo "✅  Templates copied to ~/.aws/"
+copy_zsh_theme
+set_zsh_aws_theme
+echo "✅  Awsp installed succesfully !!"
+
