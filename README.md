@@ -34,7 +34,9 @@ Allow to switch aws between accounts easily
 ##### List profiles
 ```
 ➜ aws-profiles  aws:(paris)➜ awsp list
-paris-credentials	root-credentials
+* root
+  paris
+  boston
 ```
 
 #### Switch to another profile
@@ -48,11 +50,13 @@ paris-credentials	root-credentials
 ✅  Reload zsh
 ```
 
-#### Disploy the current profile
+#### Display the current profile
 
 ```
 ➜ aws-profiles  aws:(paris)➜ awsp current
-* paris
+* root
+  paris
+  boston
 ```
 #### Display help
 

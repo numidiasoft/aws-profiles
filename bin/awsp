@@ -10,7 +10,7 @@ NO_COLOR='\033[0m'
 help() {
   echo "==> Usage :"
   echo "==> awsp list # to list all available profiles"
-  echo "==> awsp <profile name> # switch the curent profile into <profile name> "
+  echo "==> awsp <profile name> # switch the current profile into <profile name> "
 }
 
 switch() {
@@ -42,6 +42,40 @@ setCurrentProfile() {
 parse_aws_profile() {
   current=$(cat ~/.aws/.current_aws_profile)
   echo -e "${GREEN}*${NO_COLOR} ${current}"
+  list | grep -v $current
+}
+
+
+list() {
+ current=$(cat ~/.aws/.current_aws_profile)
+ versions=`ls ~/.aws/templates | sed 's/-credentials//' | grep -v example`
+ echo -e "${GREEN}*${NO_COLOR} ${current}"
+ for version in $versions; do
+   if [ $version != $current ];then
+     echo "  $version" 
+   fi
+ done
+}
+
+remove () {
+  to_remove=$1
+
+  if [ -z "${to_remove}" ]; then
+    echo "❌ Profile name is required"
+    echo "==> Usage: awsp remove nashua"
+    exit -1
+  fi
+
+  credentials_path=`echo ~/.aws/templates/${to_remove}-credentials`
+  echo "✅  Checking the the existance of ${credentials_path}"
+  if [ ! -f "${credentials_path}" ] ; then
+    echo "❌  The aws credentials file ${switch_to}-credentials doesn't exist"
+    exit -1
+  else
+    echo "✅  Remove ${credentials_path}"
+    rm  ${credentials_path} 
+    echo "✅  Your Aws profile ${to_remove} was removed"
+  fi
 }
 
 reload_zsh() {
@@ -54,7 +88,7 @@ reload_zsh() {
 
 case ${1} in
 list)
- ls ~/.aws/templates
+ list
  ;;
 current)
  parse_aws_profile
